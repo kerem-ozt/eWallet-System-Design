@@ -19,7 +19,7 @@ class MailHelper {
             to: email,
             subject: 'Reset Password',
             html: `<p> Merhaba, al sana <a href="http://127.0.0.1:3001/api/auth/forgot-password-token?token=${token}">  link</a>. </p> <div style="text-align: center;">
-            <div style="font-size: 96px;">🍌𓀓𓀃𓀁</div>
+            <div style="font-size: 96px;">𓀓𓀃𓀁</div>
           </div>`,
           };
     

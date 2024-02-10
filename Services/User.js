@@ -5,7 +5,6 @@ class UserServices {
 
     static async createUser(req) {
         try {
-            console.log(req.body);
             const newUser = new User(req.body);
             await newUser.save();
             return {type: true, data: newUser, message: `createUser success`};
