@@ -1,0 +1,58 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import routes from './Routes';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import swaggerOptions from './swaggerOptions'; // Adjust the path to your Swagger options file
+
+//import options from './swaggerOptions';
+
+const app = express();
+const port = process.env.PORT || 3001;
+
+const swaggerSpec = swaggerJSDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// const expressSwagger = require('express-swagger-generator')(app);
+// expressSwagger(options);
+
+app.use(cors());
+app.use(express.json());
+app.use(cookieParser());
+
+const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/express-mongoose-boilerplate';
+console.log(uri);
+const connectDB = async () => {
+  await mongoose
+    .connect(uri)
+    .then((db) => console.log(`Connected to DB`))
+    .catch((err) => console.log(err));
+};
+
+app.use((req, res, next) => {
+	req.decoded = {
+		language: req.headers.language ? req.headers.language : 'en'
+	};
+	next();
+});
+
+app.use((err, req, res, next) => {
+  const errorStatus = err.status || 500;
+  const errorMessage = err.message || 'Something went wrong!';
+  return res.status(errorStatus).json({
+    success: false,
+    status: errorStatus,
+    message: errorMessage,
+  });
+});
+
+app.use('/api', routes);
+
+app.listen(port, () => {
+  console.log(`Server is running on port: ${port}`);
+  connectDB();
+});
