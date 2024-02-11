@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import TokenHelper from '../Middlewares/TokenHelper';
 import MailHelper from '../Middlewares/MailHelper';
 import User from '../Models/User';
-
+import redisClient from './RedisClient';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -57,6 +57,8 @@ class AuthService {
         email: user.email,
         roles: ['user'],
       });
+
+      await redisClient.set(`user_data:${user._id}`, JSON.stringify(user), 3600);
 
       return { type: true, message: 'Login successful', token, isRegisterationComplete: user.isRegisterationComplete };
     } catch (error) {
