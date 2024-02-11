@@ -1,7 +1,6 @@
 import BankAccountService from "../Services/BankAccount";
 
 class BankAccountController {
-
     /**
      * @swagger
      * /bankaccount/create:
@@ -49,7 +48,13 @@ class BankAccountController {
             }
             return res.status(400).json(response);
         } catch (err) {
-            return res.status(500).json({ type: false, data: null, message: `createBankAccount failed: ${err}` });
+            return res
+                .status(500)
+                .json({
+                    type: false,
+                    data: null,
+                    message: `createBankAccount failed: ${err}`,
+                });
         }
     }
 
@@ -77,13 +82,21 @@ class BankAccountController {
 
     static async getBankAccountsByUser(req, res) {
         try {
-            const response = await BankAccountService.getBankAccountsByUser(req);
+            const response = await BankAccountService.getBankAccountsByUser(
+                req
+            );
             if (response.type) {
                 return res.status(200).json(response);
             }
             return res.status(400).json(response);
         } catch (err) {
-            return res.status(500).json({ type: false, data: null, message: `getBankAccountsByUser failed: ${err}` });
+            return res
+                .status(500)
+                .json({
+                    type: false,
+                    data: null,
+                    message: `getBankAccountsByUser failed: ${err}`,
+                });
         }
     }
 
@@ -117,10 +130,15 @@ class BankAccountController {
             }
             return res.status(400).json(response);
         } catch (err) {
-            return res.status(500).json({ type: false, data: null, message: `deleteBankAccount failed: ${err}` });
+            return res
+                .status(500)
+                .json({
+                    type: false,
+                    data: null,
+                    message: `deleteBankAccount failed: ${err}`,
+                });
         }
     }
-
 }
 
 export default BankAccountController;

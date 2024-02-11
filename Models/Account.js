@@ -1,59 +1,33 @@
-// import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-// const AccountSchema = new mongoose.Schema({
-//     user: { 
-//         type: mongoose.Schema.Types.ObjectId, 
-//         ref: 'User', 
-//         required: true 
-//     },
-//     bankAccount: { 
-//         type: mongoose.Schema.Types.ObjectId, 
-//         ref: 'BankAccount',
-//         required: true 
-//     },
-//     balance: {
-//         type: Number,
-//         required: true,
-//         default: 0,
-//     },
-//     currency: {
-//         type: String,
-//         required: true,
-//     }
-// });
-
-// export default mongoose.model('Account', AccountSchema);
-
-import mongoose from 'mongoose';
-
-const CurrencyEnum = ['USD', 'EUR', 'TRY']; // Define your supported currencies
+const CurrencyEnum = ["USD", "EUR", "TRY"]; // Define your supported currencies
 
 const balanceSchema = new mongoose.Schema({
-  currency: { 
-    type: mongoose.Schema.Types.String, 
-    enum: CurrencyEnum, 
-    required: true 
-},
-  amount: { 
-    type: Number, 
-    required: true, 
-    default: 0 
-}
+    currency: {
+        type: mongoose.Schema.Types.String,
+        enum: CurrencyEnum,
+        required: true,
+    },
+    amount: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
 });
 
 const AccountSchema = new mongoose.Schema({
-  user: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'User', 
-    required: true 
-},
-bankAccount: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'BankAccount',
-    required: true
-},
-  balances: [balanceSchema]
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+    bankAccount: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "BankAccount",
+        required: true,
+    },
+    balances: [balanceSchema],
 });
 
-const Account = mongoose.model('Account', AccountSchema);
+const Account = mongoose.model("Account", AccountSchema);
 export default Account;

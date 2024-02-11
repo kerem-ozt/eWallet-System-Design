@@ -1,7 +1,6 @@
 import AdminService from "../Services/Admin";
-    
-class AdminController {
 
+class AdminController {
     /**
      * @swagger
      * /admin/assign-role:
@@ -38,7 +37,13 @@ class AdminController {
             }
             return res.status(400).json(response);
         } catch (err) {
-            return res.status(500).json({ type: false, data: null, message: `assignRoleToUser failed: ${err}` });
+            return res
+                .status(500)
+                .json({
+                    type: false,
+                    data: null,
+                    message: `assignRoleToUser failed: ${err}`,
+                });
         }
     }
 
@@ -78,7 +83,13 @@ class AdminController {
             }
             return res.status(400).json(response);
         } catch (err) {
-            return res.status(500).json({ type: false, data: null, message: `removeRoleFromUser failed: ${err}` });
+            return res
+                .status(500)
+                .json({
+                    type: false,
+                    data: null,
+                    message: `removeRoleFromUser failed: ${err}`,
+                });
         }
     }
 
@@ -123,7 +134,13 @@ class AdminController {
             }
             return res.status(400).json(response);
         } catch (err) {
-            return res.status(500).json({ type: false, data: null, message: `createRole failed: ${err}` });
+            return res
+                .status(500)
+                .json({
+                    type: false,
+                    data: null,
+                    message: `createRole failed: ${err}`,
+                });
         }
     }
 
@@ -172,7 +189,13 @@ class AdminController {
             }
             return res.status(400).json(response);
         } catch (err) {
-            return res.status(500).json({ type: false, data: null, message: `updateRole failed: ${err}` });
+            return res
+                .status(500)
+                .json({
+                    type: false,
+                    data: null,
+                    message: `updateRole failed: ${err}`,
+                });
         }
     }
 
@@ -206,7 +229,13 @@ class AdminController {
             }
             return res.status(400).json(response);
         } catch (err) {
-            return res.status(500).json({ type: false, data: null, message: `deleteRole failed: ${err}` });
+            return res
+                .status(500)
+                .json({
+                    type: false,
+                    data: null,
+                    message: `deleteRole failed: ${err}`,
+                });
         }
     }
 
@@ -246,10 +275,15 @@ class AdminController {
             }
             return res.status(400).json(response);
         } catch (err) {
-            return res.status(500).json({ type: false, data: null, message: `getRoles failed: ${err}` });
+            return res
+                .status(500)
+                .json({
+                    type: false,
+                    data: null,
+                    message: `getRoles failed: ${err}`,
+                });
         }
     }
-
 }
 
 export default AdminController;

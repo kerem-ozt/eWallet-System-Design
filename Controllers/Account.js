@@ -201,7 +201,7 @@ class AccountController {
      *   get:
      *     summary: Get the balance of a user's account
      *     tags: [Account]
-       *     parameters:
+     *     parameters:
      *       - in: path
      *         name: id
      *         required: true
@@ -229,6 +229,50 @@ class AccountController {
             return res.status(500).json({ type: false, data: null, message: `getAccountBalance failed: ${err}` });
         }
     }
+
+/**
+ * @swagger
+ * /account/details/{id}:
+ *   get:
+ *     summary: Get details of a specific account by its ID
+ *     tags: [Account]
+ *     security:
+ *       - JWT: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The unique identifier of the account to retrieve details for
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved account details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AccountDetails'
+ *       401:
+ *         description: Unauthorized - Authentication credentials were not provided or are invalid.
+ *       404:
+ *         description: Account not found
+ *       500:
+ *         description: Internal server error
+ */
+
+
+        static async getAccountDetails(req, res) {
+            try {
+                const response = await AccountService.getAccountDetails(req);
+                if (response.type) {
+                    return res.status(200).json(response);
+                }
+                return res.status(400).json(response);
+            } catch (err) {
+                return res.status(500).json({ type: false, data: null, message: `getAccountDetails failed: ${err}` });
+            }
+        }
+        
 }
 
 export default AccountController;

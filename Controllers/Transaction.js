@@ -171,6 +171,120 @@ class TransactionController {
         }
     }
 
+/**
+ * @swagger
+ * /transaction/history/{id}/:
+ *   get:
+ *     summary: Get transaction history for a specific account
+ *     tags: [Transaction]
+ *     security:
+ *       - JWT: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The account ID to fetch transactions for
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved transaction history
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Transaction'
+ *       401:
+ *         description: Unauthorized - Authentication credentials were not provided or are invalid.
+ *       404:
+ *         description: Account not found
+ *       500:
+ *         description: Internal server error
+ */
+
+
+    static async getTransactionHistory(req, res) {
+        try {
+            const response = await TransactionService.getTransactionHistory(req);
+            if (response.type) {
+                return res.status(200).json(response);
+            }
+            return res.status(400).json(response);
+        } catch (err) {
+            return res.status(500).json({ type: false, data: null, message: `getTransactionHistory failed: ${err}` });
+        }
+    }
+
+    /**
+ * @swagger
+ * /transaction/cancel/{id}/:
+ *   post:
+ *     summary: Cancel a specific transaction
+ *     tags: [Transaction]
+ *     security:
+ *       - JWT: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The unique identifier of the transaction to cancel
+ *     responses:
+ *       200:
+ *         description: Successfully cancelled the transaction
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 type:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Transaction'
+ *                 message:
+ *                   type: string
+ *                   example: deleteTransaction success
+ *       400:
+ *         description: Transaction cannot be cancelled (e.g., already completed) or transaction not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 type:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 type:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ */
+
+    static async cancelTransaction(req, res) {
+        try {
+            const response = await TransactionService.cancelTransaction(req);
+            if (response.type) {
+                return res.status(200).json(response);
+            }
+            return res.status(400).json(response);
+        } catch (err) {
+            return res.status(500).json({ type: false, data: null, message: `cancelTransaction failed: ${err}` });
+        }
+    }
+
 }
 
 export default TransactionController;

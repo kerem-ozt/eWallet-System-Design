@@ -4,8 +4,8 @@ import RolePermissionHelper from '../Middlewares/RolePermissionHelper';
 
 const BankAccountRouter = express.Router();
 
-BankAccountRouter.post('/create', RolePermissionHelper.checkRole(['user']), BankAccountController.createBankAccount);
+BankAccountRouter.post('/create', RolePermissionHelper.checkRole(['user','finance']), BankAccountController.createBankAccount);
 BankAccountRouter.get('/user/:id', RolePermissionHelper.checkRole(['user']), BankAccountController.getBankAccountsByUser);
-BankAccountRouter.delete('/:id', RolePermissionHelper.checkRole(['user']), BankAccountController.deleteBankAccount);
+BankAccountRouter.delete('/:id', RolePermissionHelper.checkRole(['user','finance']), BankAccountController.deleteBankAccount);
 
 export default BankAccountRouter;

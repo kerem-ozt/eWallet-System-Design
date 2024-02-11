@@ -1,10 +1,10 @@
-import redisClient from '../Services/RedisClient';
-import TokenHelper from './TokenHelper';
+import redisClient from "../Services/RedisClient";
+import TokenHelper from "./TokenHelper";
 
 async function userCheckCache(req, res, next) {
     const decodedToken = TokenHelper.decodeToken(req.headers.authorization);
 
-    const id =  decodedToken.id;
+    const id = decodedToken.id;
     const cacheKey = `user_data:${id}`;
 
     try {
@@ -15,7 +15,7 @@ async function userCheckCache(req, res, next) {
         req.cacheKey = cacheKey;
         next();
     } catch (error) {
-        next(); 
+        next();
     }
 }
 
