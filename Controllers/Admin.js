@@ -1,5 +1,5 @@
 import AdminService from "../Services/Admin";
-
+    
 class AdminController {
 
     /**

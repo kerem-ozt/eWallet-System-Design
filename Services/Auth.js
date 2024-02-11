@@ -66,7 +66,7 @@ class AuthService {
 
   static async logout(req) {
     try {
-      const token = req.headers.authorization;
+      const token = req.headers.Authorization;
 
       if (!token) {
         return { type: false, message: 'Auth failed' };

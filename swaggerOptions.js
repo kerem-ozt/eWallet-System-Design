@@ -32,6 +32,36 @@ const swaggerDefinition = {
         description: 'Language header to define language preference',
       },
     },
+    schemas: {
+      User: {
+        type: 'object',
+        properties: {
+          type: {
+            type: 'boolean',
+          },
+          data: {
+            type: 'object',
+          },
+          message: {
+            type: 'string',
+          },
+        },
+        // properties:
+        // _id:
+        //   type: string
+        //   description: The user's unique identifier
+        // email:
+        //   type: string
+        //   format: email
+        //   description: The user's email address
+        // username:
+        //   type: string
+        //   description: The user's username
+        // phoneNumber:
+        //   type: string
+        //   description: The user's phone number
+      },
+    },
   },
   security: [
     {
@@ -47,38 +77,3 @@ module.exports = {
   swaggerDefinition,
   apis: ['./Controllers/**/*.js'], // Path to the API docs
 };
-
-// export default {
-//   swaggerDefinition: {
-//     info: {
-//       description: 'This is a backend server',
-//       title: 'Swagger',
-//       version: '1.0.0',
-//     },
-//     host: 'localhost:3001/api',
-//     basePath: '/',
-//     produces: ['application/json', 'application/xml'],
-//     schemes: ['http', 'https'],
-//     security: [
-//       {
-//         language: [],
-//         JWT: [],
-//       },
-//     ],
-//     securityDefinitions: {
-//       JWT: {
-//         type: 'apiKey',
-//         in: 'header',
-//         name: 'authorization',
-//         description: '',
-//       },
-//       language: {
-//         type: 'apiKey',
-//         in: 'header',
-//         name: 'Language',
-//       },
-//     },
-//   },
-//   basedir: __dirname, //app absolute path
-//   files: ['./Controllers/**.js'], //Path to the API handle folder
-// };

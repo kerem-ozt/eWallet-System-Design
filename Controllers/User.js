@@ -181,6 +181,95 @@ class UserController {
         }
     }
 
+    /**
+ * @swagger
+ * /user/{id}:
+ *   delete:
+ *     summary: Delete a user by ID
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID to delete
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: deleteUser success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 type:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                 message:
+ *                   type: string
+ *       400:
+ *         description: "deleteUser failed: user not found"
+ *       500:
+ *         description: "deleteUser failed: server error"
+ */
+
+
+    static async deleteUser(req, res) {
+        try {
+        const response = await UserServices.deleteUser(req);
+        if (response.type) {
+            return res.status(200).json(response);
+        }
+        return res.status(400).json(response);
+        } catch (err) {
+        return res.status(500).json({ type: false, data: null, message: `deleteUser failed: ${err}` });
+        }
+    }
+
+    /**
+ * @swagger
+ * /user/current:
+ *   get:
+ *     summary: Get the current user's information
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: getCurrentUser success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 type:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: "getCurrentUser failed: user not found"
+ *       500:
+ *         description: "getCurrentUser failed: server error"
+ */
+
+//BUG : servis auth failede gidiyor
+    static async getCurrentUser(req, res) {
+        try {
+        const response = await UserServices.getCurrentUser(req);
+        if (response.type) {
+            return res.status(200).json(response);
+        }
+        return res.status(400).json(response);
+        } catch (err) {
+        return res.status(500).json({ type: false, data: null, message: `getCurrentUser failed: ${err}` });
+        }
+    }
+
 }
 
 export default UserController;

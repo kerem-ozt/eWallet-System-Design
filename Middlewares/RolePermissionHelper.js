@@ -1,24 +1,27 @@
 import User from "../Models/User";
 import mongoose from 'mongoose';
+import TokenHelper from './TokenHelper';
 
 class RolePermissionHelper {
-    static checkRolePermission = (requiredRoles) => async (req, res, next) => {
+    static checkRole = (requiredRoles) => async (req, res, next) => {
         try {
-            const user = await User.findById(req.user.id).populate('role');
+            const decodedToken = TokenHelper.decodeToken(req.headers.authorization);
+            let userId = new mongoose.Types.ObjectId(decodedToken.id);
+            const user = await User.findById(userId).populate('roles');
             if (!user) {
-                return res.status(400).json({ type: false, data: null, message: `checkRolePermission failed: user not found` });
+                return res.status(400).json({ type: false, data: null, message: `checkRole failed: user not found` });
             }
-            if (user.roles[0] === 'admin') {
+            if (user.roles[0].name === 'admin') {
                 return next();
             }
-            const userRole = user.roles[0];
+            const userRole = user.roles[0].name;
             if (requiredRoles.includes(userRole)) {
                 next();
             } else {
                 return res.status(403).send('Access denied.');
             }
         } catch (error) {
-            return res.status(500).send('Server error.');
+            return res.status(500).send('checkRole failed: Server error.');
         }
     }
 

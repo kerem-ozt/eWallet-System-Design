@@ -1,5 +1,6 @@
 import User from '../Models/User'; 
 import mongoose from 'mongoose';
+import TokenHelper from '../Middlewares/TokenHelper';
 
 class UserServices {
 
@@ -41,17 +42,32 @@ class UserServices {
         }
     }
 
-
-    async updateUser2(userId, updateData) {
-        return User.findByIdAndUpdate(userId, updateData, { new: true });
+    static async deleteUser(req) {
+        try {
+          let objectId = new mongoose.Types.ObjectId(req.params.id);
+          const user = await User.findById(objectId);
+    
+          if (!user) return { type: false, data: null, message: `deleteUser failed: user not found` };
+    
+          const result = await user.deleteOne({ _id: objectId });
+    
+          return { type: true, data: result, message: `deleteUser success` };
+        } catch (err) {
+          return { type: false, data: null, message: `deleteUser failed: ${err}` };
+        }
     }
 
-    static async createUser2(req) {
-      const user = new User(userData);
-      await user.save();
-      return user;
-  }
-    
+    static async getCurrentUser(req) {
+        try {
+          const decodedToken = TokenHelper.decodeToken(req.headers.authorization);
+          let objectId = new mongoose.Types.ObjectId(decodedToken.id);
+          const user = await User.findById(objectId);
+          if (!user) return { type: false, data: null, message: `getCurrentUser failed: user not found` };
+          return { type: true, data: user, message: `getCurrentUser success` };
+        } catch {
+          return { type: false, data: null, message: `getCurrentUser failed: ${err}` };
+        }
+      }
 }
 
 export default UserServices;
