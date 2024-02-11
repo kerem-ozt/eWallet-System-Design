@@ -1,14 +1,29 @@
 import User from '../Models/User'; 
 import mongoose from 'mongoose';
 import TokenHelper from '../Middlewares/TokenHelper';
+import md5 from 'md5';
+import crypto from 'crypto';
 
 class UserServices {
 
     static async createUser(req) {
         try {
+            const existingUser = await User.findOne({ email: req.body.email });
+            if (existingUser) {
+              return { type: false, message: 'User already exists' };
+            }
+            const saltKey = process.env.RANDOM_SALT_KEY;
+            const encryptedPassword = md5(md5(req.body.password) + saltKey);
+            req.body.password = encryptedPassword;
+            req.body.token = '000';
+            const resetToken = crypto.randomBytes(20).toString('hex');
+
+            crypto.createHash('sha256').update(resetToken).digest('hex');
+
             const newUser = new User(req.body);
             await newUser.save();
-            return {type: true, data: newUser, message: `createUser success`};
+
+            return { type: true, message: 'User created successfully', data: newUser };
         }
         catch (err) {
             return {type: false, data: null, message: `createUser failed: ${err}`};

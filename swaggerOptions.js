@@ -22,7 +22,7 @@ const swaggerDefinition = {
       JWT: {
         type: 'apiKey',
         in: 'header',
-        name: 'Authorization',
+        name: 'authorization',
         description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization: Bearer {token}"',
       },
       language: {

@@ -60,11 +60,8 @@ class UserController {
  *       description: ObjectId of a role.
  */
 
-// BUG : swagger calismiyor
-
     static async createUser(req, res) {
         try {
-        console.log('req', req.body);
         const response = await UserServices.createUser(req);
         if (response.type) {
             return res.status(201).json(response);
@@ -195,7 +192,7 @@ class UserController {
  *           type: string
  *         description: The user ID to delete
  *     security:
- *       - bearerAuth: []
+ *       - JWT: []
  *     responses:
  *       200:
  *         description: deleteUser success
@@ -236,7 +233,7 @@ class UserController {
  *     summary: Get the current user's information
  *     tags: [User]
  *     security:
- *       - bearerAuth: []
+ *       - JWT: []
  *     responses:
  *       200:
  *         description: getCurrentUser success
@@ -257,7 +254,6 @@ class UserController {
  *         description: "getCurrentUser failed: server error"
  */
 
-//BUG : servis auth failede gidiyor
     static async getCurrentUser(req, res) {
         try {
         const response = await UserServices.getCurrentUser(req);

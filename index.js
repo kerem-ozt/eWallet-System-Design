@@ -10,15 +10,11 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import swaggerOptions from './swaggerOptions'; // Adjust the path to your Swagger options file
 
-//import options from './swaggerOptions';
-
 const app = express();
 const port = process.env.PORT || 3001;
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-// const expressSwagger = require('express-swagger-generator')(app);
-// expressSwagger(options);
 
 app.use(cors());
 app.use(express.json());
@@ -38,6 +34,16 @@ app.use((req, res, next) => {
 		language: req.headers.language ? req.headers.language : 'en'
 	};
 	next();
+});
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Be cautious with '*', adjust according to your needs
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+    return res.status(200).json({});
+  }
+  next();
 });
 
 app.use((err, req, res, next) => {
