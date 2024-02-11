@@ -3,12 +3,17 @@ import { createClient } from "redis";
 class RedisClient {
     constructor() {
         this.client = createClient({
-            url: "redis://localhost:6379", // Simplified connection string
+            url: "redis://localhost:6379", 
         });
-        this.client.on("error", (err) =>
-            console.error("Redis Client Error", err)
-        );
+        this.client.on("error", (err) => this.handleError(err));
         this.client.connect();
+    }
+
+    handleError(err) {
+        if (!this.connectionAlerted) {
+            console.log("Could not connect to Redis, continuing without cache.");
+            this.connectionAlerted = true;
+        }
     }
 
     isAlive() {
