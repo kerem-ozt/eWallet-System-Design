@@ -106,7 +106,7 @@ class AuthController {
 
     static async login(req, res) {
         try {
-            let result = await AuthService.login(req);
+            let result = await AuthService.login(req, req.decoded.language);
             return res.json(result);
         } catch (error) {
             res.json({ type: false, message: error.message });

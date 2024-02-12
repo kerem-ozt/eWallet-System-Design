@@ -4,6 +4,7 @@ import TokenHelper from "../Middlewares/TokenHelper";
 import MailHelper from "../Middlewares/MailHelper";
 import User from "../Models/User";
 import redisClient from "./RedisClient";
+import LanguageHelper from "../Middlewares/LanguageHelper";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -44,7 +45,7 @@ class AuthService {
         }
     }
 
-    static async login(req) {
+    static async login(req, language) {
         try {
             const { email, password } = req.body;
 
@@ -56,7 +57,7 @@ class AuthService {
                 password: encryptedPassword,
             });
 
-            if (!user) return { type: false, message: "User not found" };
+            if (!user) return { type: false, message: LanguageHelper(language, 'userNotFound') };
 
             const token = TokenHelper.generateToken({
                 id: user.id,

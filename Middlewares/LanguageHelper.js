@@ -7,7 +7,5 @@ const languages = {
 };
 
 export default function (language, message) {
-    console.log(language);
-    console.log(message);
     return languages[language][message];
 }
