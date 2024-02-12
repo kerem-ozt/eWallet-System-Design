@@ -1,9 +1,11 @@
 import { createClient } from "redis";
+import dotenv from "dotenv";
+dotenv.config();
 
 class RedisClient {
     constructor() {
         this.client = createClient({
-            url: "redis://localhost:6379", 
+            url: process.env.REDIS_URL,
         });
         this.client.on("error", (err) => this.handleError(err));
         this.client.connect();
